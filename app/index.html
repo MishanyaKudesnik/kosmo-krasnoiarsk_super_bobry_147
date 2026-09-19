@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FOREST BEAVER — от спутника к доказательству</title>
+<meta name="description" content="FOREST BEAVER — спутниковая верификация лесных углеродных проектов: запас, изменения, доказательства, неопределённость." />
+<link rel="icon" type="image/png" href="./assets/favicon.png" />
+<link rel="stylesheet" href="./vendor/maplibre-gl.css" />
+<script src="./vendor/maplibre-gl.js"></script>
+<script src="./vendor/chart.umd.min.js"></script>
+<link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+
+<!-- ======================================================================= ENTRY -->
+<div id="role-screen" class="hidden">
+  <div class="entry-left">
+    <div class="entry-brand">
+      <svg class="entry-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.2" stroke="#0b0b12" stroke-width="1.3"/>
+        <ellipse cx="16" cy="16" rx="14.2" ry="6" stroke="#6d4aff" stroke-width="1.3" transform="rotate(-28 16 16)"/>
+        <path d="M16 23.4V13.2" stroke="#0b0b12" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M16 13.4 11.4 17.6M16 13.4l4.6 4.2M16 17.8l-3.2 3M16 17.8l3.2 3" stroke="#0b0b12" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="25.4" cy="8.2" r="2.1" fill="#6d4aff"/>
+      </svg>
+      <span class="entry-wordmark">FOREST BEAVER</span>
+    </div>
+
+    <div class="entry-body">
+      <div class="entry-kicker">SATELLITE · FOREST · CARBON · EVIDENCE</div>
+      <h1 class="entry-hero">FROM SATELLITE<span class="l2">TO EVIDENCE.</span></h1>
+      <p class="entry-hero-ru">
+        От спутника к доказательству. FOREST BEAVER считает запас углерода в лесу по открытым спутниковым данным,
+        находит изменения, устанавливает их причину и показывает <b>каждое число вместе с источником,
+        формулой и ограничением</b>.
+      </p>
+
+      <div class="entry-flow" id="entry-flow"></div>
+
+      <div class="entry-form">
+        <div class="eyebrow" style="margin-bottom:8px">Кто вы сегодня</div>
+        <div id="role-cards" class="role-cards"></div>
+
+        <label class="field" for="entry-name"><span>Имя (появится в отчёте)</span>
+          <input id="entry-name" type="text" placeholder="Например, Анна Соколова" autocomplete="name" />
+        </label>
+
+        <div class="entry-actions">
+          <button id="start-btn" class="btn primary lg" type="button">START VERIFICATION</button>
+          <button id="demo-btn" class="btn lg" type="button">OPEN DEMO</button>
+        </div>
+        <button id="role-screen-close" class="link-btn hidden" type="button" style="margin-top:14px">Оставить текущую роль и вернуться</button>
+
+        <p class="entry-legal">
+          <b>Сценарный расчёт по условиям кейса.</b> Результат — не сертифицированные углеродные единицы
+          и не заменяет верификацию по методике сертификации. Регистрация не нужна: роль хранится только в браузере.
+        </p>
+      </div>
+    </div>
+
+    <div class="entry-foot">
+      <span>КосмоХакатон 2026 · кейс SR Data</span>
+      <span>FOREST BEAVER · <button id="credit-btn" class="link-btn" type="button">Forest Beaver, команда РУТ</button></span>
+    </div>
+  </div>
+
+  <div class="entry-right">
+    <svg id="entry-anim" viewBox="0 0 600 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+    <div class="entry-anim-cap"><span class="tick"></span><span id="entry-anim-label">ORBIT ACQUISITION</span></div>
+  </div>
+</div>
+
+<!-- ======================================================================= SHELL -->
+<header class="topbar">
+  <div class="topbar-left">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <circle cx="16" cy="16" r="14.2" stroke="#0b0b12" stroke-width="1.5"/>
+        <ellipse cx="16" cy="16" rx="14.2" ry="6" stroke="#6d4aff" stroke-width="1.5" transform="rotate(-28 16 16)"/>
+        <path d="M16 23.4V13.2" stroke="#0b0b12" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M16 13.4 11.4 17.6M16 13.4l4.6 4.2M16 17.8l-3.2 3M16 17.8l3.2 3" stroke="#0b0b12" stroke-width="1.35" stroke-linecap="round"/>
+        <circle cx="25.4" cy="8.2" r="2.2" fill="#6d4aff"/>
+      </svg>
+      <span class="brand-name">FOREST BEAVER</span>
+    </div>
+    <span class="brand-sub">SATELLITE · FOREST · CARBON · EVIDENCE</span>
+  </div>
+
+  <nav id="mainnav" class="mainnav">
+    <button class="navbtn active" data-view="map" type="button">MAP<span class="mark"></span></button>
+    <button class="navbtn" data-view="result" type="button" disabled>RESULT<span class="mark"></span></button>
+    <button class="navbtn" data-view="evidence" type="button" disabled>EVIDENCE<span class="mark"></span></button>
+    <button class="navbtn" data-view="audit" type="button" disabled>AUDIT<span class="mark"></span></button>
+  </nav>
+
+  <div class="topbar-right">
+    <span class="scenario-chip">СЦЕНАРНЫЙ РАСЧЁТ</span>
+    <div id="role-chip" class="role-chip hidden">
+      <span class="who"><span id="user-role">—</span><small id="user-name">—</small></span>
+      <button id="change-role-btn" class="btn sm ghost" type="button">сменить</button>
+    </div>
+  </div>
+</header>
+
+<main id="views">
+
+  <!-- ---------------------------------------------------------------- MAP -->
+  <section id="view-map" class="view active">
+    <aside class="rail">
+      <div class="rail-block">
+        <div class="rail-head"><span class="step">1</span><h2>Территория</h2></div>
+        <div class="seg" id="source-seg">
+          <button type="button" data-src="catalog" class="on">Участки кейса</button>
+          <button type="button" data-src="world">Любое место</button>
+        </div>
+
+        <div id="src-catalog">
+          <div id="aoi-list" class="aoi-list"></div>
+          <label class="field hidden" style="margin-top:10px"><span>Список</span>
+            <select id="aoi-select"><option value="">— выбрать —</option></select>
+          </label>
+        </div>
+
+        <div id="src-world" class="hidden">
+          <label class="field"><span>Регион на карте мира</span>
+            <select id="preset-select"><option value="">— выбрать регион —</option></select>
+          </label>
+          <div class="row" style="margin-bottom:10px">
+            <input id="place-search" class="grow" placeholder="Город, лес, район…" />
+            <button id="place-search-btn" class="btn" type="button">Найти</button>
+          </div>
+          <label class="field"><span>Размер квадрата вокруг точки</span>
+            <select id="square-size">
+              <option value="1">1 × 1 км (1 км²)</option>
+              <option value="2">2 × 2 км (4 км²)</option>
+              <option value="3" selected>3 × 3 км (9 км²)</option>
+              <option value="4">4 × 4 км (16 км²)</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="tool-grid" style="margin-top:10px">
+          <button id="place-btn" class="btn" type="button">Точка на карте</button>
+          <button id="draw-btn" class="btn" type="button">Нарисовать</button>
+          <button id="edit-btn" class="btn" type="button" disabled>Править</button>
+          <button id="clear-btn" class="btn" type="button" disabled>Очистить</button>
+        </div>
+        <button id="preset-btn" class="btn sm ghost" type="button" style="margin-top:8px;width:100%">Тестовый подучасток CHECK_TRANSFER_01</button>
+
+        <div id="selection-info" class="hidden"></div>
+      </div>
+
+      <div class="rail-block">
+        <div class="rail-head"><span class="step">2</span><h2>Период наблюдения</h2></div>
+        <div class="period-rail">
+          <div class="period-track" id="period-track"></div>
+          <div class="row">
+            <label class="field grow" style="margin:0"><span>С</span><select id="year-start"></select></label>
+            <label class="field grow" style="margin:0"><span>По</span><select id="year-end"></select></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="rail-block">
+        <div class="rail-head"><span class="step">3</span><h2>Верификация</h2></div>
+        <button id="analyze-btn" class="btn primary block lg" type="button" disabled>RUN VERIFICATION</button>
+        <div id="status" class="run-status"></div>
+        <div id="progress" class="hidden"></div>
+      </div>
+
+      <div class="rail-block" id="role-card"></div>
+    </aside>
+
+    <div class="mapwrap">
+      <div id="map"></div>
+
+      <div class="map-overlay map-hud">
+        <div class="hud-card" id="hud-coords">
+          <span>LAT <b id="hud-lat">—</b></span><span class="sep"></span>
+          <span>LON <b id="hud-lon">—</b></span><span class="sep"></span>
+          <span>Z <b id="hud-zoom">—</b></span>
+        </div>
+        <div class="hud-card hud-scale">
+          <div class="bar" id="hud-scale-bar" style="width:70px"></div>
+          <span id="hud-scale-label">—</span>
+        </div>
+      </div>
+
+      <div class="map-overlay map-layers">
+        <div class="layers-card">
+          <div class="lh" id="layers-toggle"><span>LAYERS</span><span id="layers-chev">▾</span></div>
+          <div class="lb" id="layers-body">
+            <div class="lrow on" data-layer="basemap"><span class="sw" style="background:#cfd8d2"></span>Подложка<span class="tg"></span></div>
+            <div class="lrow on" data-layer="grid"><span class="sw" style="background:#e8e2ff"></span>Сетка координат<span class="tg"></span></div>
+            <div class="lrow on" data-layer="portfolio"><span class="sw" style="background:#6d4aff"></span>Участки<span class="tg"></span></div>
+            <div class="lrow on" data-layer="loss"><span class="sw" style="background:#c4362a"></span>След потери<span class="tg"></span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sheet" id="portfolio-sheet">
+        <div class="sheet-handle" id="sheet-handle">
+          <span class="ti">Портфель участков</span>
+          <span class="badge accent" id="sheet-count">—</span>
+          <span class="chev">▴</span>
+        </div>
+        <div class="sheet-body">
+          <section id="tab-portfolio"></section>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------------------------- RESULT -->
+  <section id="view-result" class="view">
+    <div class="scroller"><div class="wrap">
+      <div id="result-hero"></div>
+      <div id="chain-block" class="chain"></div>
+
+      <nav id="tabs" class="subtabs">
+        <button class="tab-btn active" data-tab="summary" type="button">Сводка</button>
+        <button class="tab-btn" data-tab="dynamics" type="button">Динамика</button>
+        <button class="tab-btn" data-tab="changes" type="button">Изменения леса</button>
+        <button class="tab-btn" data-tab="recommendations" type="button">Рекомендации</button>
+        <button class="tab-btn" data-tab="risks" type="button">Риски и единицы</button>
+        <button class="tab-btn" data-tab="forecast" type="button">Прогноз</button>
+      </nav>
+
+      <section id="tab-summary" class="tab-content active"></section>
+      <section id="tab-dynamics" class="tab-content">
+        <div class="chart-box"><canvas id="dynamics-chart"></canvas></div>
+        <div id="dynamics-extra"></div>
+      </section>
+      <section id="tab-changes" class="tab-content"></section>
+      <section id="tab-recommendations" class="tab-content"></section>
+      <section id="tab-risks" class="tab-content"></section>
+      <section id="tab-forecast" class="tab-content"></section>
+    </div></div>
+  </section>
+
+  <!-- ----------------------------------------------------------- EVIDENCE -->
+  <section id="view-evidence" class="view">
+    <div class="scroller"><div class="wrap">
+      <div id="evidence-head"></div>
+      <nav id="tabs-ev" class="subtabs">
+        <button class="tab-btn active" data-tab="evidence" type="button">Досье / Case file</button>
+        <button class="tab-btn" data-tab="checklist" type="button">Чек-лист верификатора</button>
+        <button class="tab-btn" data-tab="sources" type="button">Источники и лицензии</button>
+      </nav>
+      <section id="tab-evidence" class="tab-content active"></section>
+      <section id="tab-checklist" class="tab-content"></section>
+      <section id="tab-sources" class="tab-content"></section>
+    </div></div>
+  </section>
+
+  <!-- -------------------------------------------------------------- AUDIT -->
+  <section id="view-audit" class="view">
+    <div class="scroller"><div class="wrap">
+      <div id="audit-head"></div>
+      <nav id="tabs-au" class="subtabs">
+        <button class="tab-btn active" data-tab="calc" type="button">Дерево расчёта</button>
+        <button class="tab-btn" data-tab="quality" type="button">Качество данных</button>
+        <button class="tab-btn" data-tab="uncertainty" type="button">Неопределённость</button>
+        <button class="tab-btn" data-tab="data" type="button">Файлы и целостность</button>
+        <button class="tab-btn" data-tab="raw" type="button">JSON</button>
+      </nav>
+      <section id="tab-calc" class="tab-content active"></section>
+      <section id="tab-quality" class="tab-content"></section>
+      <section id="tab-uncertainty" class="tab-content"></section>
+      <section id="tab-data" class="tab-content"></section>
+      <section id="tab-raw" class="tab-content"><pre id="raw-json"></pre></section>
+    </div></div>
+  </section>
+
+</main>
+
+<!-- =================================================== RUN OVERLAY (бобры) -->
+<div id="run-overlay" class="hidden">
+  <div class="run-card">
+    <div class="run-stage">
+      <svg id="beaver-scene" viewBox="0 0 560 260" aria-hidden="true"></svg>
+      <div class="run-cap">
+        <div class="run-title" id="run-title">VERIFYING FOREST…</div>
+        <div class="run-sub" id="run-sub">Читаю спутниковые данные по вашему контуру</div>
+        <div class="run-bar" id="run-bar"><i></i></div>
+        <div class="run-steps" id="run-steps"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ помощник -->
+<div id="rut" class="rut" aria-live="polite">
+  <div id="rut-bubble" class="bubble hidden"></div>
+  <button id="rut-btn" class="rut-btn" type="button" title="Бобёр РУТ — нажмите, подскажу">
+    <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+      <path d="M6 20c0-5.5 4.5-9.5 10-9.5S26 14.5 26 20c0 3.6-3.6 6.2-10 6.2S6 23.6 6 20Z" fill="#6d4aff" opacity=".13"/>
+      <path d="M6 20c0-5.5 4.5-9.5 10-9.5S26 14.5 26 20c0 3.6-3.6 6.2-10 6.2S6 23.6 6 20Z" stroke="#0b0b12" stroke-width="1.5"/>
+      <circle cx="12.6" cy="18.4" r="1.25" fill="#0b0b12"/><circle cx="19.4" cy="18.4" r="1.25" fill="#0b0b12"/>
+      <path d="M16 20.6c-1.5 0-2.4.9-2.4 1.9s1.1 1.6 2.4 1.6 2.4-.6 2.4-1.6-.9-1.9-2.4-1.9Z" fill="#0b0b12"/>
+      <path d="M9.4 11.6c-.9-1.8-.4-3.6.6-4.2 1-.6 2.6 0 3.4 1.6M22.6 11.6c.9-1.8.4-3.6-.6-4.2-1-.6-2.6 0-3.4 1.6" stroke="#0b0b12" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M26 20c2.6.6 4.2 2 4.2 3.4" stroke="#6d4aff" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </button>
+</div>
+
+<script src="./app.js"></script>
+</body>
+</html>

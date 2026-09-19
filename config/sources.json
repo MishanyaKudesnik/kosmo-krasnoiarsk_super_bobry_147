@@ -1,0 +1,20 @@
+{
+  "resolution_order": ["local", "stac", "http"],
+  "data_root": "data",
+  "fixture_root": "data_fixtures",
+  "stac": {
+    "sentinel2": {
+      "enabled": true,
+      "endpoint": "https://earth-search.aws.element84.com/v1",
+      "collection": "sentinel-2-l2a",
+      "timeout_s": 20,
+      "max_items": 60,
+      "comment": "Live open source queried by bbox and datetime. No key or subscription."
+    }
+  },
+  "http_archives": {
+    "cci": "https://dap.ceda.ac.uk/neodc/esacci/biomass/data/agb/maps/v7.0/geotiff/",
+    "modis": "https://planetarycomputer.microsoft.com/api/stac/v1",
+    "gfc": "https://storage.googleapis.com/earthenginepartners-hansen/"
+  }
+}

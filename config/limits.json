@@ -1,0 +1,11 @@
+{
+  "max_area_km2": 20.0,
+  "min_area_ha": 0.1,
+  "year_min": 2019,
+  "year_max": 2024,
+  "history_year_min": 2015,
+  "scenario_year_max": 2029,
+  "max_vertices": 2000,
+  "full_coverage_epsilon": 1e-6,
+  "comment": "year_min/year_max describe the analysis window of this case; the catalogue decides what actually exists."
+}

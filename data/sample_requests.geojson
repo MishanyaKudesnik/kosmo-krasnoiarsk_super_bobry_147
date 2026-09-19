@@ -1,0 +1,45 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "CHECK_TRANSFER_01",
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              40.701750000000004,
+              59.43
+            ],
+            [
+              40.701750000000004,
+              59.47
+            ],
+            [
+              40.66975,
+              59.47
+            ],
+            [
+              40.66975,
+              59.43
+            ],
+            [
+              40.701750000000004,
+              59.43
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "request_id": "CHECK_TRANSFER_01",
+        "parent_aoi_id": "RU_VOLOGDA_02",
+        "year_start": 2020,
+        "year_end": 2024,
+        "area_ha": 808.8538057537079,
+        "purpose": "подучасток в пределах покрытия данных",
+        "baseline_rule": "Удельная базовая линия родительского участка применяется к площади запроса."
+      }
+    }
+  ]
+}

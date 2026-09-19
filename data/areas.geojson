@@ -1,0 +1,202 @@
+{
+  "type": "FeatureCollection",
+  "name": "Analytical forest AOIs; not registered climate projects",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "RU_TVER_01",
+      "properties": {
+        "aoi_id": "RU_TVER_01",
+        "name": "Тверская область контрольный участок",
+        "region": "Тверская область",
+        "analysis_start_year": 2019,
+        "analysis_end_year": 2024,
+        "area_ha": 1750.4731,
+        "selection_role": "контрольный участок",
+        "project_status": "исследовательский участок",
+        "stand_age": null,
+        "dominant_species": null,
+        "site_class": null,
+        "bbox_west": 32.91,
+        "bbox_south": 56.59,
+        "bbox_east": 32.974,
+        "bbox_north": 56.63,
+        "baseline_id": "HIST-AGB-2015-2019-v1"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              32.974,
+              56.59
+            ],
+            [
+              32.974,
+              56.63
+            ],
+            [
+              32.91,
+              56.63
+            ],
+            [
+              32.91,
+              56.59
+            ],
+            [
+              32.974,
+              56.59
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "RU_VOLOGDA_02",
+      "properties": {
+        "aoi_id": "RU_VOLOGDA_02",
+        "name": "Вологодская область мозаика потерь покрова",
+        "region": "Вологодская область",
+        "analysis_start_year": 2019,
+        "analysis_end_year": 2024,
+        "area_ha": 1617.7075,
+        "selection_role": "недавние потери покрова с неустановленной причиной",
+        "project_status": "исследовательский участок",
+        "stand_age": null,
+        "dominant_species": null,
+        "site_class": null,
+        "bbox_west": 40.66975,
+        "bbox_south": 59.43,
+        "bbox_east": 40.73375,
+        "bbox_north": 59.47,
+        "baseline_id": "HIST-AGB-2015-2019-v1"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              40.73375,
+              59.43
+            ],
+            [
+              40.73375,
+              59.47
+            ],
+            [
+              40.66975,
+              59.47
+            ],
+            [
+              40.66975,
+              59.43
+            ],
+            [
+              40.73375,
+              59.43
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "RU_MORDOVIA_03",
+      "properties": {
+        "aoi_id": "RU_MORDOVIA_03",
+        "name": "Мордовия пожар и повторные нарушения",
+        "region": "Республика Мордовия",
+        "analysis_start_year": 2019,
+        "analysis_end_year": 2024,
+        "area_ha": 1829.5984,
+        "selection_role": "повторные нарушения и пожар",
+        "project_status": "исследовательский участок",
+        "stand_age": null,
+        "dominant_species": null,
+        "site_class": null,
+        "bbox_west": 43.17,
+        "bbox_south": 54.85025,
+        "bbox_east": 43.234,
+        "bbox_north": 54.89025,
+        "baseline_id": "HIST-AGB-2015-2019-v1"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              43.234,
+              54.85025
+            ],
+            [
+              43.234,
+              54.89025
+            ],
+            [
+              43.17,
+              54.89025
+            ],
+            [
+              43.17,
+              54.85025
+            ],
+            [
+              43.234,
+              54.85025
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "RU_MORDOVIA_04",
+      "properties": {
+        "aoi_id": "RU_MORDOVIA_04",
+        "name": "Мордовия ранняя потеря покрова и пожар 2021 года",
+        "region": "Республика Мордовия",
+        "analysis_start_year": 2019,
+        "analysis_end_year": 2024,
+        "area_ha": 1832.7456,
+        "selection_role": "ранние потери покрова и последующий пожар",
+        "project_status": "исследовательский участок",
+        "stand_age": null,
+        "dominant_species": null,
+        "site_class": null,
+        "bbox_west": 43.18,
+        "bbox_south": 54.78025,
+        "bbox_east": 43.244,
+        "bbox_north": 54.82025,
+        "baseline_id": "HIST-AGB-2015-2019-v1"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              43.244,
+              54.78025
+            ],
+            [
+              43.244,
+              54.82025
+            ],
+            [
+              43.18,
+              54.82025
+            ],
+            [
+              43.18,
+              54.78025
+            ],
+            [
+              43.244,
+              54.78025
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}

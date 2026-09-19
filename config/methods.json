@@ -1,0 +1,48 @@
+{
+  "analysis_grid": {
+    "source": "CCI_AGB",
+    "comment": "Carbon is integrated on the native biomass grid. The integrated quantity is never resampled."
+  },
+  "change_detection": {
+    "z_threshold_k": 1.0,
+    "min_abs_change_t_ha": 5.0,
+    "min_patch_ha": 1.5,
+    "connectivity": 8,
+    "comment": "A pixel counts as changed when |db| exceeds both k*sigma_diff of the product's own AGB_SD and an absolute floor. k*sigma is a scaled threshold, not a statistical significance level."
+  },
+  "scene_selection": {
+    "season_doy_min": 152,
+    "season_doy_max": 258,
+    "reference_doy": 210,
+    "min_usable_fraction": 0.5,
+    "valid_scl_classes": [4, 5, 6, 7],
+    "vegetation_scl_classes": [4, 5],
+    "comment": "Usable fraction is computed on the request contour, never from scene level metadata."
+  },
+  "uncertainty": {
+    "k_multiplier": 1.0,
+    "spatial_model": "exponential",
+    "correlation_length_m": 1000.0,
+    "temporal_correlation": 0.0,
+    "scenarios": [
+      {"id": "independent", "label": "Независимые ошибки", "spatial_model": "independent", "temporal_correlation": 0.0},
+      {"id": "exponential_1km", "label": "Экспоненциальная, L = 1000 м", "spatial_model": "exponential", "correlation_length_m": 1000.0, "temporal_correlation": 0.0},
+      {"id": "fully_correlated", "label": "Полная пространственная корреляция", "spatial_model": "fully_correlated", "temporal_correlation": 0.0}
+    ],
+    "interval_kind": "scenario",
+    "comment": "The interval is a scenario range under stated correlation assumptions, not an empirically calibrated confidence interval."
+  },
+  "vri_weights": {
+    "data_quality": 0.2,
+    "model_error": 0.2,
+    "spatial_coverage": 0.25,
+    "temporal_coverage": 0.15,
+    "causal_evidence": 0.2,
+    "comment": "An ordinal triage index, not a probability. No decision in the code is taken from it."
+  },
+  "evidence": {
+    "modis_may_provide_area": false,
+    "min_overlap_fraction": 0.05,
+    "comment": "MODIS supplies time and the fact of burning, never geometry or area."
+  }
+}
